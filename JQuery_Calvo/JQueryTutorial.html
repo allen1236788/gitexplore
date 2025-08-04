@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,intial-scale=1.0">
+<title>jQuery Tutorial</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    body{
+        font-family: Arial,sans-serif;
+        display: flex;
+        margin:0;
+        padding:0;
+    }
+    /*Left menu styling*/
+    #menu{
+        width:200px;
+        background-color:#333;
+        color:white;
+        padding:20px;
+        box-sizing:border-box;
+    } #menu h2{
+        text-align:center;
+    }
+    #menu ul{
+        list-style-type:none;
+        padding:0;
+    }
+    #menu ul li{
+        margin:10px 0;
+    }
+    #menu ul li a{
+        color:white;
+        text-deecoration:none;
+        for-size: 16px;
+        display:block;
+        padding:10px;
+        border-radius:4px;
+        transition:backgroun-color 0.3s;
+    }
+    #menu ul li:hover{
+        backgroung-color:#575757;
+    }
+    /*Right content area*/
+    #content{
+        flex-grow:1;
+        padding:20px;
+        box-sizing:border-box;
+    }
+   #content h2{
+    color:#333;
+   }
+   .tutorial-selection{
+    display:none;
+   }
+.output{
+    margin-top:10px;
+    padding:10px;
+    background-color:#f4f4f4;
+    border:1px solid #ddd;
+    border-radius: 4px;
+    font-family:monospace;
+    font-size:16px;
+    color:#333;
+}
+input[type="text"],input[type="number"],select{
+    padding:10px;
+    font-size:16px;
+    margin-top:10px;
+    width:100%;
+    border-radius:4px;
+    border:1px solid#ddd;
+}
+button{
+    background-color:#333;
+    color:white;
+    padding:10px 20px;
+    font-size:16px;
+    border:none;
+    cursor:pointer;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+button:hover{
+    background-color: #575757;
+}
+</style>
+</head>
+<body>
+    
+    <!--Left Menu-->
+    <div id="menu">
+        <h2>jQuery Tutorials</h2>
+        <ul>
+            <li><a href="#" data-tutorial="variables">Variables and Data Types</a></li>
+            <li><a href="#" data-tutorial="add=-numbers">Add two Numbers</a></li>
+              <li><a href="#" data-tutorial="if-statement">if Statement(Grade Check)</a></li>
+            <li><a href="#" data-tutorial="loops">Loops(for&while)</a></li>
+              <li><a href="#" data-tutorial="arrays">Arrays</a></li>
+            <li><a href="#" data-tutorial="string">Strings and Parsing</a></li>
+               <li><a href="#" data-tutorial="functions">Funtions</a></li>
+              <li><a href="#" data-tutorial="events">Event Listener</a></li>
+            <li><a href="#" data-tutorial="control-manipulation">Control Manipulation</a></li>
+
+        </ul>
+    </div>
+
+    <!--Right-->
+    <div id="content">
+    <div id="variables" class="tutorial-section">
+        <h2>Variables and Data Types</h2>
+        <p> Enter a name and age to see how vaiables work:</p>
+        <input type="text" id="var-name" placeholder="Enter name (e.g. John)">
+        <input type="number" id="var-age" placeholder="Enter age (e.g. 25)">
+        <button id="var-submit">Display Variables</button>
+        <div class="output" id="output-variables"></div>
+    </div>
+
+    <div id="add-numbers" class="tutorial-section">
+    <h2>Add Two Numbers</h2>
+    <P> Enter two numbers to add:</P>
+    <input type="number" id="num1" placeholder="Enter first number">
+    <input type="number" id="num2" placeholder="Enter second number">
+    <buton id="add-submit"> Add Numbers</buton>
+    <div class="output" id="output-add-numbers"></div>
+</div>
+<div id="if-statement" class="tutorial-section">
+    <h2>if-statement(Grade Check)</h2>
+    <p>Enter a grade to check if the student passed:</p>
+    <input type="number" id="grade" placeholder="Enter grade">
+    <button id="grade-submit"> Check Grade</button>
+    <div class="output" id="output-if-statement"></div>
+</div>
+
+<div id ="loops" class="tutorial-section">
+<h2>Loops(for&while)</h2>
+<p>Enter a number to see the output of a<code>for</code>loop:</p>
+<input type="number" id="loop-num" placeholder="Enter anumber">
+<button id="loop-submit">Run Loop</button>
+<div class="output" id="output-loops"></div>
+</div>
+
+<div id="arrays"class="tutorial-section">
+    <h2>Arrays</h2>
+    <P>Enter values for an array:</P>
+    <input type="text"id="array-values" placeholder="Enter comma-separated values">
+    <button id="array-submit"> Convert to Number</button>
+    <div class="output"id="output-strings"></div>
+</div>
+
+<div id="strings"class="tutorial-section">
+    <h2>Strings and Parsing</h2>
+    <p>Enter a string to convert it into a number</p>
+    <input type="text"id="string-input"placeholder="Enter a string (e.g., '123')">
+    <button id="string-submit">Convert to Number</button>
+    <div class="output" id="output-strings"></div>
+</div>
+<!--jQuery and Script to Show Tutorials-->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        ///Hide all tutorial sections initially
+        $(".tutorial-section").hide();
+
+        //Show the selected tutorial base ont the menu link clicked
+        $("#menu ul li a").click(function(){
+            var tutorial=$(this).data("tutorial");
+
+        //Hide all sections and show the selected one
+        $(".tutorial-section").hide();  
+        $("#" +tutorial).show();
+        });
+        //Tutorial actions
+        $("#var-submit").click(function(){
+            var name=$("#var-name").val();
+            var age=$("#var-age").val();
+            $("#output-variables").html(`Name:${name}<br>Age:${age}`)
+        });
+        $("#add-submit").click(function(){
+            var num1=parseFloat($("#num1").val());
+            var num2=parseFloat($("#num2").val());
+            var sum=num1+num2;
+            $("#output-add-numbers").html(`Sum:${sum}`);
+        });
+        $("#grade-submit").click(function(){
+        var grade=parseFloat($("grade").val());
+        if(grade>=50){
+            $("#output-if-statement").html("Student Passed!");
+        }else{
+            $("#output-if-statement").html("Student Failed!");
+        }
+        });
+        $("#loop-submit").click(function(){
+            var num=parseInt($("#loop-num").val());
+            var output="";
+            for(var i=0;i<num;i++){
+                output+=`iteratio$(i+1)<br>`;
+            }
+            $("#output-loops").html(output);
+        });
+        $("#array-submit").click(function(){
+            var values=$("#array-values").val().split(",");
+            $("#output-arrays").html(`Array:[${values}]`);
+        });
+
+       $("#string-submit").click(function(){
+        var str=$("#string-input").val();
+        var num=parseInt(str);
+        $("#output-strings").html(`Converted Number:${num}`);
+       });
+
+        $("#function-submit").click(function(){
+            var nam=$("#function-name").val();
+            var message=`Hello,${name}!`;
+            $("#output-functions").html(message);
+        });
+
+        $("#myButton").click(function(){
+            alert("You click a button!")
+        });
+        
+        $("#control-submit").click(function(){
+            var selectedValue=$("#mySelect").val();
+            $("#output-control-manipulation").html(`Selected Option:${selectedValue}`);
+        });
+    });
+</script>
+</body>
+</html>
